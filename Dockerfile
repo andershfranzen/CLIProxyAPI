@@ -47,7 +47,7 @@ WORKDIR /a5proxy
 
 EXPOSE 8317
 
-ENV TZ=Asia/Shanghai
+ENV TZ=Europe/Copenhagen
 
 RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && echo "${TZ}" > /etc/timezone
 
