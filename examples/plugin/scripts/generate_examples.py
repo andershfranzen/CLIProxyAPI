@@ -16,25 +16,24 @@ class Capability(NamedTuple):
     title: str
     capability_json: str
     methods: tuple[str, ...]
-    description_cn: str
     description_en: str
 
 
 CAPABILITIES = (
-    Capability("model", "Model", '"model_provider":true', ("model.static", "model.for_auth"), "模型能力示例，只返回静态模型和按认证发现模型。", "Model capability example with static and auth-bound models."),
-    Capability("auth", "Auth", '"auth_provider":true', ("auth.identifier", "auth.parse", "auth.login.start", "auth.login.poll", "auth.refresh"), "认证能力示例，演示解析、登录、轮询和刷新。", "Auth capability example with parse, login, poll, and refresh."),
-    Capability("frontend-auth", "Frontend Auth", '"frontend_auth_provider":true', ("frontend_auth.identifier", "frontend_auth.authenticate"), "前端认证能力示例，演示代理入口前认证。", "Frontend auth capability example."),
-    Capability("executor", "Executor", '"executor":true,"executor_model_scope":"both","executor_input_formats":["chat-completions"],"executor_output_formats":["chat-completions"]', ("executor.identifier", "executor.execute", "executor.execute_stream", "executor.count_tokens", "executor.http_request"), "执行器能力示例，演示普通执行、流式执行、计数和 HTTP 请求。", "Executor capability example."),
-    Capability("protocol-format", "Protocol Format", '"executor":true,"executor_model_scope":"both","executor_input_formats":["chat-completions"],"executor_output_formats":["responses"]', ("executor.identifier", "executor.execute"), "协议格式适配示例，用最小执行器承载格式声明。", "Protocol format example carried by a minimal executor."),
-    Capability("request-translator", "Request Translator", '"request_translator":true', ("request.translate",), "请求转换能力示例。", "Request translator capability example."),
-    Capability("request-normalizer", "Request Normalizer", '"request_normalizer":true', ("request.normalize",), "请求规整能力示例。", "Request normalizer capability example."),
-    Capability("response-translator", "Response Translator", '"response_translator":true', ("response.translate",), "响应转换能力示例。", "Response translator capability example."),
-    Capability("response-normalizer", "Response Normalizer", '"response_before_translator":true,"response_after_translator":true', ("response.normalize_before", "response.normalize_after"), "响应规整能力示例。", "Response normalizer capability example."),
-    Capability("thinking", "Thinking", '"thinking_applier":true', ("thinking.identifier", "thinking.apply"), "Thinking 能力示例。", "Thinking applier capability example."),
-    Capability("usage", "Usage", '"usage_plugin":true', ("usage.handle",), "Usage 能力示例。", "Usage observer capability example."),
-    Capability("cli", "CLI", '"command_line_plugin":true', ("command_line.register", "command_line.execute"), "命令行扩展能力示例。", "Command-line capability example."),
-    Capability("management-api", "Management API", '"management_api":true', ("management.register", "management.handle"), "Management API 扩展能力示例。", "Management API capability example."),
-    Capability("host-callback", "Host Callback", '"management_api":true', ("management.register", "management.handle"), "Host callback 示例，用最小 Management API 入口触发宿主 HTTP 和日志回调。", "Host callback example carried by a minimal Management API route."),
+    Capability("model", "Model", '"model_provider":true', ("model.static", "model.for_auth"), "Model capability example with static and auth-bound models."),
+    Capability("auth", "Auth", '"auth_provider":true', ("auth.identifier", "auth.parse", "auth.login.start", "auth.login.poll", "auth.refresh"), "Auth capability example with parse, login, poll, and refresh."),
+    Capability("frontend-auth", "Frontend Auth", '"frontend_auth_provider":true', ("frontend_auth.identifier", "frontend_auth.authenticate"), "Frontend auth capability example."),
+    Capability("executor", "Executor", '"executor":true,"executor_model_scope":"both","executor_input_formats":["chat-completions"],"executor_output_formats":["chat-completions"]', ("executor.identifier", "executor.execute", "executor.execute_stream", "executor.count_tokens", "executor.http_request"), "Executor capability example."),
+    Capability("protocol-format", "Protocol Format", '"executor":true,"executor_model_scope":"both","executor_input_formats":["chat-completions"],"executor_output_formats":["responses"]', ("executor.identifier", "executor.execute"), "Protocol format example carried by a minimal executor."),
+    Capability("request-translator", "Request Translator", '"request_translator":true', ("request.translate",), "Request translator capability example."),
+    Capability("request-normalizer", "Request Normalizer", '"request_normalizer":true', ("request.normalize",), "Request normalizer capability example."),
+    Capability("response-translator", "Response Translator", '"response_translator":true', ("response.translate",), "Response translator capability example."),
+    Capability("response-normalizer", "Response Normalizer", '"response_before_translator":true,"response_after_translator":true', ("response.normalize_before", "response.normalize_after"), "Response normalizer capability example."),
+    Capability("thinking", "Thinking", '"thinking_applier":true', ("thinking.identifier", "thinking.apply"), "Thinking applier capability example."),
+    Capability("usage", "Usage", '"usage_plugin":true', ("usage.handle",), "Usage observer capability example."),
+    Capability("cli", "CLI", '"command_line_plugin":true', ("command_line.register", "command_line.execute"), "Command-line capability example."),
+    Capability("management-api", "Management API", '"management_api":true', ("management.register", "management.handle"), "Management API capability example."),
+    Capability("host-callback", "Host Callback", '"management_api":true', ("management.register", "management.handle"), "Host callback example carried by a minimal Management API route."),
 )
 
 
