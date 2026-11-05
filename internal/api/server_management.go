@@ -321,19 +321,15 @@ func (s *Server) serveManagementControlPanel(c *gin.Context) {
 		return
 	}
 
+	// The panel is bundled with the deployment; it is never downloaded at runtime.
 	if _, err := os.Stat(filePath); err != nil {
 		if os.IsNotExist(err) {
-			// Synchronously ensure management.html is available with a detached context.
-			// Control panel bootstrap should not be canceled by client disconnects.
-			if !managementasset.EnsureLatestManagementHTML(context.Background(), managementasset.StaticDir(s.configFilePath), cfg.ProxyURL, cfg.RemoteManagement.PanelGitHubRepository) {
-				c.AbortWithStatus(http.StatusNotFound)
-				return
-			}
-		} else {
-			log.WithError(err).Error("failed to stat management control panel asset")
-			c.AbortWithStatus(http.StatusInternalServerError)
+			c.AbortWithStatus(http.StatusNotFound)
 			return
 		}
+		log.WithError(err).Error("failed to stat management control panel asset")
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 
 	c.File(filePath)

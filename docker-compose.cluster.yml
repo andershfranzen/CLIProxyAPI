@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      additional_contexts:
+        # Source of the management web panel bundled into the image.
+        panel: ${A5PROXY_PANEL_PATH:-../Cli-Proxy-API-Management-Center}
       args:
         VERSION: ${VERSION:-dev}
         COMMIT: ${COMMIT:-none}

@@ -1,3 +1,15 @@
+# Build the management web panel from the named "panel" build context:
+#   docker build --build-context panel=/path/to/Cli-Proxy-API-Management-Center ...
+FROM oven/bun:1.4.3 AS panel-builder
+
+WORKDIR /panel
+
+COPY --from=panel . .
+
+ARG PANEL_VERSION=
+
+RUN rm -rf node_modules dist && bun install --frozen-lockfile && VERSION="${PANEL_VERSION}" bun run build
+
 FROM golang:1.26-bookworm AS builder
 
 WORKDIR /app
@@ -25,6 +37,11 @@ RUN mkdir /a5proxy
 COPY --from=builder ./app/a5proxy /a5proxy/a5proxy
 
 COPY config.example.yaml /a5proxy/config.example.yaml
+
+# The management panel is bundled into the image and never downloaded at runtime.
+COPY --from=panel-builder /panel/dist/index.html /a5proxy/static/management.html
+
+ENV MANAGEMENT_STATIC_PATH=/a5proxy/static
 
 WORKDIR /a5proxy
 

@@ -1,7 +1,8 @@
 # docker-build.ps1 - a5proxy Windows PowerShell Build Script
 #
 # This script automates the process of building and running the Docker container
-# with version information dynamically injected at build time.
+# with version information dynamically injected at build time. The management
+# panel source is taken from A5PROXY_PANEL_PATH (default ../Cli-Proxy-API-Management-Center).
 
 # Stop script execution on any error
 $ErrorActionPreference = "Stop"
