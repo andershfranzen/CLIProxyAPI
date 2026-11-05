@@ -3,12 +3,13 @@
 Go 1.26+ proxy server providing OpenAI/Gemini/Claude/Codex compatible APIs with OAuth and round-robin load balancing.
 
 ## Repository
-- GitHub: https://github.com/router-for-me/CLIProxyAPI
+- GitHub: https://github.com/andershfranzen/CLIProxyAPI (a5proxy, a fork of https://github.com/router-for-me/CLIProxyAPI)
+- Branding: user-visible text says "a5proxy"; internal identifiers (Go module path, package names, exported identifiers, plugin ABI symbols, API paths, config keys, values sent to upstream providers) keep the upstream names to ease merges.
 
 ## Commands
 ```bash
 gofmt -w . # Format (required after Go changes)
-go build -o cli-proxy-api ./cmd/server # Build
+go build -o a5proxy ./cmd/server # Build
 go run ./cmd/server # Run dev server
 go test ./... # Run all tests
 go test -v -run TestName ./path/to/pkg # Run single test
@@ -45,8 +46,7 @@ go build -o test-output ./cmd/server && rm test-output # Verify compile (REQUIRE
 - Keep changes small and simple (KISS)
 - Comments in English only
 - If editing code that already contains non-English comments, translate them to English (don’t add new non-English comments)
-- For user-visible strings, keep the existing language used in that file/area
-- New Markdown docs should be in English unless the file is explicitly language-specific (e.g. `README_CN.md`)
+- User-visible strings and Markdown docs are English-only
 - As a rule, do not make standalone changes to `internal/translator/`. You may modify it only as part of broader changes elsewhere.
 - If a task requires changing only `internal/translator/`, run `gh repo view --json viewerPermission -q .viewerPermission` to confirm you have `WRITE`, `MAINTAIN`, or `ADMIN`. If you do, you may proceed; otherwise, file a GitHub issue including the goal, rationale, and the intended implementation code, then stop further work.
 - `internal/runtime/executor/` should contain executors and their unit tests only. Place any helper/supporting files under `internal/runtime/executor/helps/`.

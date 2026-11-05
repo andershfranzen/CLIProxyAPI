@@ -1,6 +1,6 @@
 # Claude Code with a Codex backend
 
-Claude Code can remain the client while CLIProxyAPI routes its Messages requests
+Claude Code can remain the client while a5proxy routes its Messages requests
 to a Codex credential. Client model names are routing aliases: they do not change
 the upstream model or make the connection an Anthropic subscription session.
 
@@ -20,7 +20,8 @@ client:
     show-codex-commentary: true
 ```
 
-The default is `false`. `CPA_VISIBLE_CODEX_COMMENTARY=1` also enables the option
+The default is `false`. `A5PROXY_VISIBLE_CODEX_COMMENTARY=1` (legacy name:
+`CPA_VISIBLE_CODEX_COMMENTARY`) also enables the option
 for deployments and embedded translation callers using environment settings.
 The display policy is captured for each request; reloading the configuration
 does not change the representation halfway through an existing stream.
@@ -65,7 +66,7 @@ for its current classifier-selection rules.
 
 ## Image tools and coding latency
 
-CLIProxyAPI can add the native OpenAI `image_generation` tool automatically.
+a5proxy can add the native OpenAI `image_generation` tool automatically.
 That is separate from any external MCP image tool declared by a client.
 Operators who want the client to own its tool list can use the existing mode:
 

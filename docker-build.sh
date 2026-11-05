@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# build.sh - Linux/macOS Build Script
+# docker-build.sh - a5proxy Linux/macOS Build Script
 #
 # This script automates the process of building and running the Docker container
 # with version information dynamically injected at build time.
@@ -15,16 +15,16 @@ fi
 
 # --- Step 1: Choose Environment ---
 echo "Please select an option:"
-echo "1) Run using Pre-built Image (Recommended)"
+echo "1) Run using an existing image (A5PROXY_IMAGE, default a5proxy:latest)"
 echo "2) Build from Source and Run (For Developers)"
 read -r -p "Enter choice [1-2]: " choice
 
 # --- Step 2: Execute based on choice ---
 case "$choice" in
   1)
-    echo "--- Running with Pre-built Image ---"
+    echo "--- Running with existing image ---"
     docker compose up -d --remove-orphans --no-build
-    echo "Services are starting from remote image."
+    echo "Services are starting from the existing image."
     echo "Run 'docker compose logs -f' to see the logs."
     ;;
   2)
@@ -42,7 +42,7 @@ case "$choice" in
     echo "----------------------------------------"
 
     # Build and start the services with a local-only image tag
-    export CLI_PROXY_IMAGE="cli-proxy-api:local"
+    export A5PROXY_IMAGE="a5proxy:local"
 
     echo "Building the Docker image..."
     docker compose build \

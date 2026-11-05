@@ -3,7 +3,7 @@
 The base path is `/v8/management`. Configuration endpoints follow the structure in
 [config.example.yaml](../config.example.yaml); operational endpoints are grouped
 by function. The existing `/v0/management` API remains supported. Its reference is
-available in the [management API guide](https://help.router-for.me/management/api).
+available in the upstream [management API guide](https://help.router-for.me/management/api).
 
 ## Access
 
@@ -88,7 +88,7 @@ retain the corresponding business operation's fields.
 | Path | Methods | Description |
 | --- | --- | --- |
 | `/config/upstream/<provider>` | GET, PUT, PATCH, DELETE | Manage shared provider settings. |
-| `/server/latest-version` | GET | Get latest release information. |
+| `/server/latest-version` | GET | Returns the running version as `latest-version` (a5proxy does not check upstream releases). |
 | `/requests/api-call` | POST | Make an authenticated upstream call. |
 | `/routing/cooldown/reset` | POST | Clear credential cooldown. |
 | `/routing/model-definitions/<channel>` | GET | Get model definitions. |

@@ -108,7 +108,7 @@ management:
   # When enabled, the panel is only downloaded on first access if missing, and never auto-updated afterward.
   # disable-auto-update-panel: false
 
-  # Base URL of remote management API when using TUI client mode (cliproxyapi --tui).
+  # Base URL of remote management API when using TUI client mode (a5proxy --tui).
   # Defaults to http://127.0.0.1:<port> if not set. Can also be set via --management-base-url.
   # base-url: "https://proxy.example.com"
 
@@ -202,7 +202,7 @@ routing:
     # its eligible credentials. Round 0 is the initial round; round r only admits
     # credentials whose effective request-retry is at least r. Explicit non-negative
     # credential/provider overrides take precedence; omitted or negative overrides
-    # inherit this global value, and explicit 0 only admits round 0. New CPA nodes
+    # inherit this global value, and explicit 0 only admits round 0. New a5proxy nodes
     # send retry_round=0 for the initial round and increment it for additional rounds;
     # legacy dispatch methods omit the field and keep old semantics.
     # Additional rounds apply to HTTP 403, 408, 429, 500, 502, 503, and 504 failures.
@@ -428,7 +428,7 @@ upstream:
     # the stream is released to the client and further in-stream overloads are delivered rather
     # than failed over. This bounds how long trickled heartbeats or early empty frames can delay
     # response headers before streaming begins.
-    # Recommendation: If your CPA is deployed behind a reverse proxy with a strict read timeout
+    # Recommendation: If your a5proxy is deployed behind a reverse proxy with a strict read timeout
     # (e.g. Nginx default proxy_read_timeout 60s or Cloudflare 100s timeout), setting this to "20s"
     # is strongly recommended to guarantee headers commit well before proxy timeouts while retaining
     # a comfortable 20s window to fail over early scheduling overloads.
@@ -822,14 +822,14 @@ upstream:
 #           # count_tokens keeps the native model/messages/tools shape for every origin, including
 #           # Kimi opt-in. It does not send billing/CCH, currentDate, metadata, or diagnostics.
 #           #
-#           # CCH: the billing block may carry a per-request cch hash. CPA emits it exactly where
+#           # CCH: the billing block may carry a per-request cch hash. a5proxy emits it exactly where
 #           # Claude Code does, which is api.anthropic.com (first-party) and Vertex only. An opt-in
 #           # on any other gateway (including Kimi) still sends the billing block, but without cch,
 #           # so a per-request hash cannot bust that gateway's prompt cache. api.anthropic.com
 #           # strips the block itself (0 tokens, no cache impact). Kimi drops the whole block by
 #           # default and keeps it, unsigned, after an explicit fingerprint opt-in.
 #           # A real Claude OAuth credential always signs, on every upstream: a downstream Claude
-#           # Code pointed at CPA cannot produce that value itself.
+#           # Code pointed at a5proxy cannot produce that value itself.
 #           #
 #           # Example group under api-keys.claude (official Anthropic or a Messages gateway):
 #           #   - name: cli-compatible-gateway
@@ -972,7 +972,7 @@ upstream:
 # OAuth/file-backed credentials. Token material stays in the credential store.
 oauth:
   # Authentication directory (supports ~ for home directory)
-  auth-dir: "~/.cli-proxy-api"
+  auth-dir: "~/.a5proxy"
 
   # Core auth auto-refresh and manual refresh-all worker pool size (OAuth/file-based auth token refresh).
   # When > 0, overrides the default worker count (16).
@@ -1133,7 +1133,7 @@ oauth:
         # Reject downstream SDP candidates that target private, loopback, link-local, or unspecified IPs.
         # Keep false for local or trusted-network Codex Desktop connections.
         disable-private-remote-ips: false
-        # Public IPv4 or IPv6 address advertised when CPA is behind 1:1 NAT.
+        # Public IPv4 or IPv6 address advertised when a5proxy is behind 1:1 NAT.
         public-ip: ""
         # Optional UDP allocation range. Both values must be set together and provide at least two ports per session.
         udp-port-min: 0
@@ -1152,6 +1152,7 @@ oauth:
         #     credential: "secret"
 
       # Identifier (agent_name_hint and User-Agent prefix) for Sign in with ChatGPT (SIWC) OAuth and API requests.
+      # This value is sent to OpenAI; the upstream default is kept intentionally.
       signin-with-chatgpt-identifier: "CLIProxyAPI"
 
       # Default headers for Codex OAuth model requests.
@@ -1260,31 +1261,31 @@ plugins:
   dir: "plugins"
   # Additional plugin store registries. The built-in official registry is always included.
   # store-sources:
-  #   - "https://example.com/cliproxy-plugins/registry.json"
+  #   - "https://example.com/a5proxy-plugins/registry.json"
   # Optional plugin store auth rules. Secrets are read from environment variables.
   # Tokens are not stored in plugin manifests or node status.
   # store-auth:
   #   - match: "https://plugins.example.com/bearer/"
   #     apply-to: ["registry", "artifact"]
   #     type: "bearer"
-  #     token-env: "CLIPROXY_PLUGIN_STORE_TOKEN"
+  #     token-env: "A5PROXY_PLUGIN_STORE_TOKEN"
   #     allow-insecure: false
   #   - match: "https://plugins.example.com/basic/"
   #     apply-to: ["registry", "artifact"]
   #     type: "basic"
-  #     username-env: "CLIPROXY_PLUGIN_STORE_USER"
-  #     password-env: "CLIPROXY_PLUGIN_STORE_PASSWORD"
+  #     username-env: "A5PROXY_PLUGIN_STORE_USER"
+  #     password-env: "A5PROXY_PLUGIN_STORE_PASSWORD"
   #     allow-insecure: false
   #   - match: "https://plugins.example.com/header/"
   #     apply-to: ["registry", "artifact"]
   #     type: "header"
   #     header-name: "X-Plugin-Token"
-  #     header-value-env: "CLIPROXY_PLUGIN_STORE_HEADER_TOKEN"
+  #     header-value-env: "A5PROXY_PLUGIN_STORE_HEADER_TOKEN"
   #     allow-insecure: false
   #   - match: "https://api.github.com/repos/example/"
   #     apply-to: ["registry", "artifact"]
   #     type: "github-token"
-  #     token-env: "CLIPROXY_PLUGIN_GITHUB_TOKEN"
+  #     token-env: "A5PROXY_PLUGIN_GITHUB_TOKEN"
   #     allow-insecure: false
 
   # Home owns this revision; it is not an ordinary editable setting.
@@ -1320,7 +1321,7 @@ plugins:
 #   request-retry: 3                 # now routing.retry.request-retry
 #   debug: false                     # now observability.logs.debug
 #   proxy-url: ""                    # now requests.proxy-url
-#   auth-dir: "~/.cli-proxy-api"     # now oauth.auth-dir
+#   auth-dir: "~/.a5proxy"          # now oauth.auth-dir
 #   codex:                           # now oauth.providers.codex
 #     disable-codex-cloaking: false
 #   codex-api-key:                   # now api-keys.codex groups with keys

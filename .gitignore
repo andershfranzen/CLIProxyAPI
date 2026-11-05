@@ -1,4 +1,5 @@
 # Binaries
+/a5proxy
 cli-proxy-api
 *.exe
 

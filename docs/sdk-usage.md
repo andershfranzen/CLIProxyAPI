@@ -1,4 +1,4 @@
-# CLI Proxy SDK Guide
+# a5proxy SDK Guide
 
 The `sdk/cliproxy` module exposes the proxy as a reusable Go library so external programs can embed the routing, authentication, hot‑reload, and translation layers without depending on the CLI binary.
 

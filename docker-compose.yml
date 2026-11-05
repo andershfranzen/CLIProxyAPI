@@ -1,7 +1,7 @@
 services:
-  cli-proxy-api:
-    image: ${CLI_PROXY_IMAGE:-eceasy/cli-proxy-api:latest}
-    pull_policy: always
+  a5proxy:
+    # A5PROXY_* variables take precedence; the legacy CLI_PROXY_* names still work.
+    image: ${A5PROXY_IMAGE:-${CLI_PROXY_IMAGE:-a5proxy:latest}}
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,7 +9,7 @@ services:
         VERSION: ${VERSION:-dev}
         COMMIT: ${COMMIT:-none}
         BUILD_DATE: ${BUILD_DATE:-unknown}
-    container_name: cli-proxy-api
+    container_name: a5proxy
     # env_file:
     #   - .env
     environment:
@@ -22,8 +22,8 @@ services:
       - "51121:51121"
       - "11451:11451"
     volumes:
-      - ${CLI_PROXY_CONFIG_PATH:-./config.yaml}:/CLIProxyAPI/config.yaml
-      - ${CLI_PROXY_AUTH_PATH:-./auths}:/root/.cli-proxy-api
-      - ${CLI_PROXY_LOG_PATH:-./logs}:/CLIProxyAPI/logs
-      - ${CLI_PROXY_PLUGIN_PATH:-./plugins}:/CLIProxyAPI/plugins
+      - ${A5PROXY_CONFIG_PATH:-${CLI_PROXY_CONFIG_PATH:-./config.yaml}}:/a5proxy/config.yaml
+      - ${A5PROXY_AUTH_PATH:-${CLI_PROXY_AUTH_PATH:-./auths}}:/root/.a5proxy
+      - ${A5PROXY_LOG_PATH:-${CLI_PROXY_LOG_PATH:-./logs}}:/a5proxy/logs
+      - ${A5PROXY_PLUGIN_PATH:-${CLI_PROXY_PLUGIN_PATH:-./plugins}}:/a5proxy/plugins
     restart: unless-stopped

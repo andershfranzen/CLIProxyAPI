@@ -1,4 +1,4 @@
-# build.ps1 - Windows PowerShell Build Script
+# docker-build.ps1 - a5proxy Windows PowerShell Build Script
 #
 # This script automates the process of building and running the Docker container
 # with version information dynamically injected at build time.
@@ -8,16 +8,16 @@ $ErrorActionPreference = "Stop"
 
 # --- Step 1: Choose Environment ---
 Write-Host "Please select an option:"
-Write-Host "1) Run using Pre-built Image (Recommended)"
+Write-Host "1) Run using an existing image (A5PROXY_IMAGE, default a5proxy:latest)"
 Write-Host "2) Build from Source and Run (For Developers)"
 $choice = Read-Host -Prompt "Enter choice [1-2]"
 
 # --- Step 2: Execute based on choice ---
 switch ($choice) {
     "1" {
-        Write-Host "--- Running with Pre-built Image ---"
+        Write-Host "--- Running with existing image ---"
         docker compose up -d --remove-orphans --no-build
-        Write-Host "Services are starting from remote image."
+        Write-Host "Services are starting from the existing image."
         Write-Host "Run 'docker compose logs -f' to see the logs."
     }
     "2" {
@@ -35,7 +35,7 @@ switch ($choice) {
         Write-Host "----------------------------------------"
 
         # Build and start the services with a local-only image tag
-        $env:CLI_PROXY_IMAGE = "cli-proxy-api:local"
+        $env:A5PROXY_IMAGE = "a5proxy:local"
         
         Write-Host "Building the Docker image..."
         docker compose build --build-arg VERSION=$VERSION --build-arg COMMIT=$COMMIT --build-arg BUILD_DATE=$BUILD_DATE
